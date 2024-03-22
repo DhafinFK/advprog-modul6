@@ -129,3 +129,24 @@ let (status_line, filename) = match &request_line[..] {
 ```
 - menggunakan match statement bukan if else untuk mencari string yang sesuai dengan string yang di dalam curly brackets. 
 - sekarang ditambahkan juga sleep untuk thread selama 5 detik setelah berhasil memberikan respone 200 untuk simulasi slow response.
+
+## Commit 5 Reflection
+Pada commit kali ini, setiap kali ada stream baru maka program akan membuat threadpool dengan instance 4 worker, yang berarti bisa meng handle 4 TCP connections sekaligus. Kode nya sebagai berikut:
+
+```rust
+let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
+let pool = ThreadPool::new(4); // Creates a new thread pool with 4 workers.
+
+for stream in listener.incoming() {
+    let stream = stream.unwrap();
+
+    pool.execute(|| {
+        handle_connection(stream);
+    });
+}
+```
+
+sedangkan implementasi threadpool di lib.rs adalah:
+- Struktur ThreadPool: Mewakili pool dari thread pekerja. Ia memiliki vektor dari instance Worker dan bagian pengirim dari sebuah saluran untuk mengirimkan pekerjaan ke pekerja.
+- Struktur Worker: Mewakili satu thread pekerja. Setiap pekerja memiliki ID dan handle thread.
+- Tipe Job: Alias tipe untuk sebuah closure yang dibungkus yang dapat dijalankan oleh pekerja. Ini memungkinkan server untuk mengantri fungsi arbitrer (dalam hal ini, penanganan koneksi) untuk dieksekusi oleh thread pool.

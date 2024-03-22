@@ -43,3 +43,6 @@ fn handle_connection(mut stream: TcpStream) {
 }
 ```
 Fungsi ini mengambil referensi dari TCPStream dan kemudian membungkus stream dengan BufReader untuk membuat pembacaan baris lebih efisien. Kemudian stream tadi akan diubah menjadi vektor berisi string yang berisi http request dan kemudian di print dengan rapih.
+
+## Commit 2 Reflection
+![Commit 2 screen capture](assets/images/commit2.png)

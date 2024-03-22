@@ -109,3 +109,23 @@ let response =
     format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
 ```
 untuk membuat response lengkap berdasarkan isi dari variable yang telah ditentukan sesuai dengan request yang dibuat
+
+## Commit 4 Reflection
+Pada commit kali ini, lagi-lagi kode pada handle_connection berubah menjadi:
+
+```rust
+// code
+
+let (status_line, filename) = match &request_line[..] {
+    "GET / HTTP/1.1" => ("HTTP/1.1 200 OK", "hello.html"),
+    "GET /sleep HTTP/1.1" => {
+        thread::sleep(Duration::from_secs(5));
+        ("HTTP/1.1 200 OK", "hello.html")
+    }
+    _ => ("HTTP/1.1 404 NOT FOUND", "404.html"),
+};
+
+// code
+```
+- menggunakan match statement bukan if else untuk mencari string yang sesuai dengan string yang di dalam curly brackets. 
+- sekarang ditambahkan juga sleep untuk thread selama 5 detik setelah berhasil memberikan respone 200 untuk simulasi slow response.

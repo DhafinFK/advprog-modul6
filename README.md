@@ -46,3 +46,32 @@ Fungsi ini mengambil referensi dari TCPStream dan kemudian membungkus stream den
 
 ## Commit 2 Reflection
 ![Commit 2 screen capture](assets/images/commit2.png)
+
+Pada commit ke-2 terdapat import baru yaitu
+```rust
+use std::fs;
+```
+yang merupakan standard library dari rust file system module untuk read write file.
+
+<hr>
+
+Kemudian terdapat beberapa tambahan pada handle connection function:
+```rust
+// code
+
+let status_line = "HTTP/1.1 200 OK"; 
+let contents = fs::read_to_string("hello.html").unwrap(); 
+let length = contents.len();
+
+let response =
+    format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
+
+stream.write_all(response.as_bytes()).unwrap();
+```
+- status)line mendefinisikan status dari http response 
+- contents mengisi content dari http response dengan hello.html dalam bentuk string. 
+- length merepresentasikan ukuran dari body response
+- response menggabungkan bagian bagian tadi menjadi satu http response lengkap sebagai string.
+- write_all mencoba menulis message lengkap ke dalam strream memastikan HTTP response telah dikirim dan dalam bentuk bytes karena ditulis response.as_bytes()
+
+<hr>

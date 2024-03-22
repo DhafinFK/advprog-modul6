@@ -150,3 +150,6 @@ sedangkan implementasi threadpool di lib.rs adalah:
 - Struktur ThreadPool: Mewakili pool dari thread pekerja. Ia memiliki vektor dari instance Worker dan bagian pengirim dari sebuah saluran untuk mengirimkan pekerjaan ke pekerja.
 - Struktur Worker: Mewakili satu thread pekerja. Setiap pekerja memiliki ID dan handle thread.
 - Tipe Job: Alias tipe untuk sebuah closure yang dibungkus yang dapat dijalankan oleh pekerja. Ini memungkinkan server untuk mengantri fungsi arbitrer (dalam hal ini, penanganan koneksi) untuk dieksekusi oleh thread pool.
+
+## Bonus commit:
+Improved threadpool based on the rust documentation https://doc.rust-lang.org/book/ch20-03-graceful-shutdown-and-cleanup.html

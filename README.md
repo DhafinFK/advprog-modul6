@@ -74,4 +74,38 @@ stream.write_all(response.as_bytes()).unwrap();
 - response menggabungkan bagian bagian tadi menjadi satu http response lengkap sebagai string.
 - write_all mencoba menulis message lengkap ke dalam strream memastikan HTTP response telah dikirim dan dalam bentuk bytes karena ditulis response.as_bytes()
 
+
+## Commit 3 Reflection
+Kali ini kode diubah sedemikian rupa sehingga bila kita mengakses url yang belum di define oleh main function, maka program akan mengeluarkan html page seperti berikut:
+
+![Commit 3 screen capture](assets/images/commit3.png)
+
+dan pada commit kali ini function handle_connection diubah lagi sebagai berikut:
+
+```rust
+let request_line = buf_reader.lines().next().unwrap().unwrap();
+```
+
+untuk mendapatkan request method dan target url
+
 <hr>
+
+```rust
+let (status_line, filename) = if request_line == "GET / HTTP/1.1" {
+    ("HTTP/1.1 200 OK", "hello.html")
+} else {
+    ("HTTP/1.1 404 NOT FOUND", "404.html")
+};
+```
+untuk menetukan status dan filename apa yang akan digunakan sebagai response html
+
+<hr>
+
+```rust
+let contents = fs::read_to_string(filename).unwrap();
+let length = contents.len();
+
+let response =
+    format!("{status_line}\r\nContent-Length: {length}\r\n\r\n{contents}");
+```
+untuk membuat response lengkap berdasarkan isi dari variable yang telah ditentukan sesuai dengan request yang dibuat
